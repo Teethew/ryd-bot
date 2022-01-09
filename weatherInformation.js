@@ -7,7 +7,7 @@ function weatherInformation(city) {
         city.reply("to aq qualquer coisa")
     }
 
-    // request("api.openweathermap.org/data/2.5/weather?q=SaoPaulo&appid=6be0c80c31e8caf69601e5691b92d981", 
+    // request("api.openweathermap.org/data/2.5/weather?q=SaoPaulo&appid=process.env.APP_ID", 
     // function (error, response, body) {
     //     console.log("error:", error)
     //     console.log("statusCode:", response && response.statusCode)
