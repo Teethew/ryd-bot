@@ -1,8 +1,9 @@
 const dotenv = require("dotenv")
 const Discord = require("discord.js") //importing discord.js from node_modules
-//const Voice = require("@discordjs/voice")
 const createEmbedResponse = require("./music")
 const search = require("./youtube")
+const loggedUser = require("./loggedUser")
+const weatherInformation = require("./weatherInformation")
 
 dotenv.config()
 
@@ -23,9 +24,7 @@ client.on("ready", () => { //once a ready event happens, the bot will automatica
 client.on("messageCreate", async (message) => { //whenever the bot sees someone, it will send a message
     let musicCommand = prefix + "p "
 
-    if (message.content == "salve") {
-        message.reply("Saaalveee quebrada!")
-    }
+    loggedUser(message)
 
     if (message?.content.startsWith(musicCommand)) {
         const song = message.content.replace(musicCommand, "")
