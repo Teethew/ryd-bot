@@ -1,5 +1,6 @@
 const dotenv = require("dotenv")
 const { google } = require('googleapis');
+const moment = require('moment')
 
 dotenv.config()
 
@@ -15,8 +16,20 @@ async function search(query) {
         part: 'snippet',
         maxResults: 1,
         q: query,
-        key: API_KEY
+        key: API_KEY,
+        type: 'video'
     })
 }
 
-module.exports = search
+async function getDuration(id) {
+    const res = await youtube.videos.list({
+        id: id,
+        part: 'contentDetails',
+        key: API_KEY
+    })
+    const iso8601duration = res.data.items[0].contentDetails.duration
+    const duration = moment.duration(iso8601duration)
+    return `${duration.get('minutes')}:${duration.get('seconds')}`  
+}
+
+module.exports = { search, getDuration }

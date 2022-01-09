@@ -1,7 +1,7 @@
 const dotenv = require("dotenv")
 const Discord = require("discord.js") //importing discord.js from node_modules
 const createEmbedResponse = require("./music")
-const search = require("./youtube")
+const { search, getDuration } = require("./youtube")
 const loggedUser = require("./loggedUser")
 const weatherInformation = require("./weatherInformation")
 
@@ -24,17 +24,21 @@ client.on("ready", () => { //once a ready event happens, the bot will automatica
 client.on("messageCreate", async (message) => { //whenever the bot sees someone, it will send a message
     let musicCommand = prefix + "p "
 
-    loggedUser(message)
+    //loggedUser(message)
 
     if (message?.content.startsWith(musicCommand)) {
         const song = message.content.replace(musicCommand, "")
 
         await search(song)
-                .then(youtubeResponse => {
-                    const embeds = createEmbedResponse(youtubeResponse, message)
-                    const title = embeds[0].title //
-                    message.reply(`Reproduzindo **${title}**`)
-                    message.channel.send({ embeds: embeds })
+                .then( async youtubeResponse => {
+                    const videoId = youtubeResponse.data.items[0].id.videoId
+                    const embeds = createEmbedResponse(youtubeResponse)
+                    const duration = await getDuration(videoId)
+                    const title = embeds[0].title
+                    message.channel.send({ 
+                        content: `Reproduzindo **${title}** (${duration})`,
+                        embeds: embeds 
+                    })
                 })
     }
 
