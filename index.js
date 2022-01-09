@@ -1,5 +1,7 @@
-const dotenv = require('dotenv')
-const Discord = require("discord.js") //importing discord.js from node_modules
+const dotenv = require("dotenv")
+const loggedUser = require("./loggedUser")
+const weatherInformation = require("./weatherInformation")
+const Discord = require("discord.js")
 dotenv.config()
 
 const TOKEN = process.env.TOKEN
@@ -15,10 +17,12 @@ client.on("ready", () => { //once a ready event happens, the bot will automatica
     console.log(`Logged in as ${client.user.tag}`)
 })
 
-client.on("messageCreate", (message) => { //whenever the bot sees someone, it will send a message
-    if (message.content == "salve"){
-        message.reply("Saaalveee quebrada!")
-    }
+client.on("messageCreate", (message) => { 
+    loggedUser(message)
+})
+
+client.on("weatherInform", (city) => {
+    weatherInformation()
 })
 
 
